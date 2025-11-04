@@ -1,4 +1,4 @@
-local files = { "cmake", "debug", "menu", "navigation", "toggle" }
+local files = { "autoformat", "cmake", "debug", "menu", "navigation", "toggle" }
 
 for _, filename in ipairs(files) do
     for _, mapping in ipairs(require("keymaps." .. filename)) do
