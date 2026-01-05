@@ -5,5 +5,6 @@ vim.g.moonflyTransparent = true
 -- 	flavour = "latte",
 -- 	transparent_background = false,
 -- })
+vim.cmd.colorscheme("moonfly")
 
 require("keymaps.setup")
