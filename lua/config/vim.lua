@@ -11,3 +11,4 @@ vim.cmd("set foldmethod=manual")
 vim.cmd("set foldcolumn=1")
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
