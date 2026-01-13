@@ -9,6 +9,7 @@ vim.cmd("set autoread")
 
 vim.cmd("set foldmethod=manual")
 vim.cmd("set foldcolumn=1")
+vim.cmd("set foldlevelstart=99")
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
