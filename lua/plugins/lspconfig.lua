@@ -13,7 +13,6 @@ return {
                 "cmake",
                 "pyright",
                 "ruff",
-                -- "nil_ls",
             },
         },
     },
@@ -99,6 +98,7 @@ return {
             vim.lsp.enable("pyright")
             -- vim.lsp.enable("nil_ls")
             vim.lsp.enable("gopls")
+            vim.lsp.enable("slint_lsp")
 
             -- requires 'vscode-langservers-extracted' to be installed globally in npm
             vim.lsp.enable("html")

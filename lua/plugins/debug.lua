@@ -58,6 +58,9 @@ return {
             dap.configurations.cpp = {
                 cpp_config,
             }
+            dap.configurations.c = {
+                cpp_config,
+            }
         end,
     },
     {
