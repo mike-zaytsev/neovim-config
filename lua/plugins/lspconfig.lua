@@ -10,7 +10,6 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "clangd",
-                "cmake",
                 "pyright",
                 "ruff",
             },
@@ -93,11 +92,15 @@ return {
             })
 
             vim.lsp.enable("clangd")
-            vim.lsp.enable("cmake")
             vim.lsp.enable("lua_ls")
             vim.lsp.enable("pyright")
-            -- vim.lsp.enable("nil_ls")
+
+            local gopath = vim.system({ "go", "env", "GOPATH" }):wait().stdout
+            vim.lsp.config("gopls", {
+                cmd = { string.sub(gopath, 1, -2) .. "/bin/gopls" },
+            })
             vim.lsp.enable("gopls")
+
             vim.lsp.enable("slint_lsp")
 
             -- requires 'vscode-langservers-extracted' to be installed globally in npm
