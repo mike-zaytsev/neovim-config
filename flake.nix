@@ -7,41 +7,51 @@
 
   outputs = { self, nixpkgs }:
     let
-      pkgs = import nixpkgs {};
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
 
       appName = "nvim-flake";
 
-      configHome = pkgs.runCommand "nvim-config-home" {} ''
-        mkdir -p "$out/${appName}"
-        cp ${./init.lua} "$out/${appName}/init.lua"
-        cp -r ${./lua} "$out/${appName}/lua"
-
-        cat > "$out/${appName}/lua/config/binary_paths.lua <<EOF
+      binPaths = pkgs.writeTextDir "${appName}/lua/config/nix_paths.lua" ''
         return {
             clangd = "${pkgs.clang-tools}/bin/clangd",
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
-            pyright = "${pkgs.pyright}/bin/pyright}",
+            pyright = "${pkgs.pyright}/bin/pyright-langserver",
+            ruff = "${pkgs.ruff}/bin/ruff",
+            slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
             gopls = "${pkgs.gopls}/bin/gopls",
         }
-        EOF
       '';
+
+      configTree = pkgs.runCommand "nvim-config-tree" {} ''
+        mkdir -p "$out/${appName}"
+        cp ${./init.lua} "$out/${appName}/init.lua"
+        cp -r ${./lua} "$out/${appName}/lua"
+      '';
+
+      configHome = pkgs.symlinkJoin {
+        name = "nvim-config-home";
+        paths = [ configTree binPaths ];
+      };
     in {
-      packages.${system}.default = pkgs.writeShellApplication {
-        name = "nvim-flake";
-        runtimeInputs = with pkgs [
-          neovim
-          clang-tools
-          lua-language-server
-          pyright
-          gopls
-        ];
-        runtimeEnv = {
-          NVIM_APPNAME = appName;
-          XDG_CONFIG_HOME = configHome;
+      packages.${system} = {
+        default = pkgs.writeShellApplication {
+          name = "nvim-flake";
+          runtimeInputs = with pkgs; [
+            neovim
+            clang-tools
+            lua-language-server
+            pyright
+            gopls
+          ];
+          runtimeEnv = {
+            NVIM_APPNAME = appName;
+            XDG_CONFIG_HOME = configHome;
+          };
+          text = ''
+            exec ${pkgs.neovim}/bin/nvim "$@"
+          '';
         };
-        text = ''
-          exec ${pkgs.neovim}/bin/nvim "$@"
-        '';
       };
 
       apps.${system}.default = {

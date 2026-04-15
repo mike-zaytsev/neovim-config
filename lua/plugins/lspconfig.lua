@@ -2,22 +2,6 @@ local binaries = require "config.binary_paths"
 
 return {
     {
-        "williamboman/mason.nvim",
-        config = true,
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "williamboman/mason.nvim" },
-        opts = {
-            ensure_installed = {
-                "lua_ls",
-                "clangd",
-                "pyright",
-                "ruff",
-            },
-        },
-    },
-    {
         "neovim/nvim-lspconfig",
         config = function()
             vim.lsp.config("clangd", {
@@ -97,7 +81,10 @@ return {
             })
 
             vim.lsp.config("pyright", {
-                cmd = { binaries.pyright },
+                cmd = { binaries.pyright, "--stdio" },
+            })
+            vim.lsp.config("ruff", {
+                cmd = { binaries.ruff, "server" },
             })
             vim.lsp.enable("pyright")
 
@@ -106,6 +93,9 @@ return {
             })
             vim.lsp.enable("gopls")
 
+            vim.lsp.config("slint_lsp", {
+                cmd = { binaries.slint_lsp },
+            })
             vim.lsp.enable("slint_lsp")
 
             -- requires 'vscode-langservers-extracted' to be installed globally in npm
