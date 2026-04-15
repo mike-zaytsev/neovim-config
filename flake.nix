@@ -15,11 +15,11 @@
       binPaths = pkgs.writeTextDir "${appName}/lua/config/nix_paths.lua" ''
         return {
             clangd = "${pkgs.clang-tools}/bin/clangd",
+            gopls = "${pkgs.gopls}/bin/gopls",
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
             ruff = "${pkgs.ruff}/bin/ruff",
             slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
-            gopls = "${pkgs.gopls}/bin/gopls",
         }
       '';
 
@@ -39,10 +39,14 @@
           name = "nvim-flake";
           runtimeInputs = with pkgs; [
             neovim
+            git
+
             clang-tools
+            gopls
             lua-language-server
             pyright
-            gopls
+            ruff
+            slint-lsp
           ];
           runtimeEnv = {
             NVIM_APPNAME = appName;
