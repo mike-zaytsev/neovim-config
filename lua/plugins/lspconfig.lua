@@ -98,6 +98,11 @@ return {
             })
             vim.lsp.enable("slint_lsp")
 
+            vim.lsp.config("cmake", {
+                cmd = { binaries.cmake_language_server },
+            })
+            vim.lsp.enable("cmake")
+
             -- requires 'vscode-langservers-extracted' to be installed globally in npm
             vim.lsp.enable("html")
             vim.lsp.enable("cssls")

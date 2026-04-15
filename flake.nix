@@ -15,6 +15,7 @@
       binPaths = pkgs.writeTextDir "${appName}/lua/config/nix_paths.lua" ''
         return {
             clangd = "${pkgs.clang-tools}/bin/clangd",
+            cmake_language_server = "${pkgs.cmake-language-server}/bin/cmake-language-server",
             gopls = "${pkgs.gopls}/bin/gopls",
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
@@ -41,7 +42,7 @@
             neovim
             
             git
-            lua51Packages.lua.withPackages (ps: [ps.jsregexp])
+            (lua51Packages.lua.withPackages (ps: [ps.jsregexp]))
             lua51Packages.luarocks
             python3
 
