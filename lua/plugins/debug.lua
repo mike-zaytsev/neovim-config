@@ -1,3 +1,5 @@
+local binaries = require "config.binary_paths"
+
 return {
     {
         "mfussenegger/nvim-dap",
@@ -6,14 +8,8 @@ return {
 
             dap.adapters.lldb = {
                 type = "executable",
-                command = "/usr/bin/lldb-dap",
+                command = binaries.lldb_dap,
                 name = "lldb",
-            }
-
-            dap.adapters.gdb = {
-                type = "executable",
-                command = "gdb",
-                args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
             }
 
             local check_executable = function(filepath, type)

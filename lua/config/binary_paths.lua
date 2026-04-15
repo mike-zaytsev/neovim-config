@@ -8,6 +8,7 @@ return {
     clangd = vim.fn.exepath("clangd"),
     cmake_language_server = vim.fn.exepath("cmake-language-server"),
     gopls = string.sub(gopath, 1, -2) .. "/bin/gopls",
+    lldb_dap = vim.fn.exepath("lldb-dap"),
     lua_ls = vim.fn.exepath("lua-language-server"),
     pyright = vim.fn.exepath("pyright-langserver"),
     ruff = vim.fn.exepath("ruff"),
