@@ -41,12 +41,16 @@
             neovim
             
             git
+            lua51Packages.jsregexp
             lua51Packages.lua
             lua51Packages.luarocks
             python3
 
+            curl
             fd
+            gcc
             ripgrep
+            tar
             tree-sitter
 
             clang-tools
