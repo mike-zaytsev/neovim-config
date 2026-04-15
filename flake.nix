@@ -2,7 +2,7 @@
   description = "Wrapped Neovim with isolated config and state";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs = { self, nixpkgs }:
@@ -39,13 +39,22 @@
           name = "nvim-flake";
           runtimeInputs = with pkgs; [
             neovim
+            
             git
+            lua51Packages.lua
+            lua51Packages.luarocks
+            python3
+
+            fd
+            ripgrep
+            tree-sitter
 
             clang-tools
             gopls
             lua-language-server
             pyright
             ruff
+            rust-analyzer
             slint-lsp
           ];
           runtimeEnv = {
