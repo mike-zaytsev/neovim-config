@@ -13,7 +13,7 @@
       appName = "nvim-flake";
 
       # Build a fake XDG config home whose subdir matches NVIM_APPNAME.
-      configHome = pkgs.runCommandNoCC "nvim-config-home" {} ''
+      configHome = pkgs.runCommand "nvim-config-home" {} ''
         mkdir -p "$out/${appName}"
         cp ${./init.lua} "$out/${appName}/init.lua"
         cp -r ${./lua} "$out/${appName}/lua"
