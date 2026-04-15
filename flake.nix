@@ -7,21 +7,34 @@
 
   outputs = { self, nixpkgs }:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {};
 
       appName = "nvim-flake";
 
-      # Build a fake XDG config home whose subdir matches NVIM_APPNAME.
       configHome = pkgs.runCommand "nvim-config-home" {} ''
         mkdir -p "$out/${appName}"
         cp ${./init.lua} "$out/${appName}/init.lua"
         cp -r ${./lua} "$out/${appName}/lua"
+
+        cat > "$out/${appName}/lua/config/binary_paths.lua <<EOF
+        return {
+            clangd = "${pkgs.clang-tools}/bin/clangd",
+            lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
+            pyright = "${pkgs.pyright}/bin/pyright}",
+            gopls = "${pkgs.gopls}/bin/gopls",
+        }
+        EOF
       '';
     in {
       packages.${system}.default = pkgs.writeShellApplication {
         name = "nvim-flake";
-        runtimeInputs = [ pkgs.neovim ];
+        runtimeInputs = with pkgs [
+          neovim
+          clang-tools
+          lua-language-server
+          pyright
+          gopls
+        ];
         runtimeEnv = {
           NVIM_APPNAME = appName;
           XDG_CONFIG_HOME = configHome;
