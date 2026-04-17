@@ -1,11 +1,12 @@
 {
-  description = "Wrapped Neovim with isolated config and state";
+  description = "Self-contained Neovim setup";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -19,13 +20,14 @@
             gopls = "${pkgs.gopls}/bin/gopls",
             lldb_dap = "${pkgs.lldb}/bin/lldb-dap",
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
+            nil_ls = "${pkgs.nil}/bin/nil",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
             ruff = "${pkgs.ruff}/bin/ruff",
             slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
         }
       '';
 
-      configTree = pkgs.runCommand "nvim-config-tree" {} ''
+      configTree = pkgs.runCommand "nvim-config-tree" { } ''
         mkdir -p "$out/${appName}"
         cp ${./init.lua} "$out/${appName}/init.lua"
         cp -r ${./lua} "$out/${appName}/lua"
@@ -33,17 +35,21 @@
 
       configHome = pkgs.symlinkJoin {
         name = "nvim-config-home";
-        paths = [ configTree binPaths ];
+        paths = [
+          configTree
+          binPaths
+        ];
       };
-    in {
+    in
+    {
       packages.${system} = {
         default = pkgs.writeShellApplication {
-          name = "nvim-flake";
+          name = "nvim";
           runtimeInputs = with pkgs; [
             neovim
-            
+
             git
-            (lua51Packages.lua.withPackages (ps: [ps.jsregexp]))
+            (lua51Packages.lua.withPackages (ps: [ ps.jsregexp ]))
             lua51Packages.luarocks
             python3
 
@@ -74,7 +80,7 @@
 
       apps.${system}.default = {
         type = "app";
-        program = "${self.packages.${system}.default}/bin/nvim-flake";
+        program = "${self.packages.${system}.default}/bin/nvim";
       };
     };
 }
