@@ -3,10 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    tree-sitter-flake.url = "github:tree-sitter/tree-sitter/v0.26.8";
   };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      tree-sitter-flake,
+    }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -59,7 +64,7 @@
             gnumake
             gnutar
             ripgrep
-            tree-sitter
+            tree-sitter-flake.packages.${system}.cli
 
             clang-tools
             gopls
@@ -79,11 +84,9 @@
         };
       };
 
-      apps.${system} = {
-        default = {
-          type = "app";
-          program = "${self.packages.${system}.default}/bin/nvim";
-        };
+      apps.${system}.default = {
+        type = "app";
+        program = "${self.packages.${system}.default}/bin/nvim";
       };
     };
 }
