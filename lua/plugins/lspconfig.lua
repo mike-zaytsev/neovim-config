@@ -1,34 +1,22 @@
+local binaries = require "config.binary_paths"
+
 return {
-    {
-        "williamboman/mason.nvim",
-        config = true,
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "williamboman/mason.nvim" },
-        opts = {
-            ensure_installed = {
-                "lua_ls",
-                "clangd",
-                "pyright",
-                "ruff",
-            },
-        },
-    },
     {
         "neovim/nvim-lspconfig",
         config = function()
             vim.lsp.config("clangd", {
                 cmd = {
-                    "clangd",
+                    binaries.clangd,
                     "--clang-tidy",
                     "--enable-config",
                     "--header-insertion=never",
                     "--function-arg-placeholders=0",
                 },
             })
+            vim.lsp.enable("clangd")
 
             vim.lsp.config("lua_ls", {
+                cmd = { binaries.lua_ls },
                 on_init = function(client)
                     if client.workspace_folders then
                         local path = client.workspace_folders[1].name
@@ -84,6 +72,7 @@ return {
                     },
                 },
             })
+            vim.lsp.enable("lua_ls")
 
             vim.lsp.config("rust-analyzer", {
                 cmd_env = {
@@ -91,17 +80,33 @@ return {
                 },
             })
 
-            vim.lsp.enable("clangd")
-            vim.lsp.enable("lua_ls")
+            vim.lsp.config("pyright", {
+                cmd = { binaries.pyright, "--stdio" },
+            })
+            vim.lsp.config("ruff", {
+                cmd = { binaries.ruff, "server" },
+            })
             vim.lsp.enable("pyright")
 
-            local gopath = vim.system({ "go", "env", "GOPATH" }):wait().stdout
             vim.lsp.config("gopls", {
-                cmd = { string.sub(gopath, 1, -2) .. "/bin/gopls" },
+                cmd = { binaries.gopls },
             })
             vim.lsp.enable("gopls")
 
+            vim.lsp.config("slint_lsp", {
+                cmd = { binaries.slint_lsp },
+            })
             vim.lsp.enable("slint_lsp")
+
+            vim.lsp.config("cmake", {
+                cmd = { binaries.cmake_language_server },
+            })
+            vim.lsp.enable("cmake")
+
+            vim.lsp.config("nil_ls", {
+                cmd = { binaries.nil_ls },
+            })
+            vim.lsp.enable("nil_ls")
 
             -- requires 'vscode-langservers-extracted' to be installed globally in npm
             vim.lsp.enable("html")

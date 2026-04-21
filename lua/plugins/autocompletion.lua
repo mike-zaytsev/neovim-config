@@ -1,3 +1,5 @@
+local binaries = require "config.binary_paths"
+
 return {
     {
         "hrsh7th/nvim-cmp",
@@ -42,5 +44,10 @@ return {
                 }),
             })
         end,
+    },
+    {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = binaries.make .. " install_jsregexp",
     },
 }
