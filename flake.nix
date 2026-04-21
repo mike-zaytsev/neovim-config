@@ -21,6 +21,7 @@
             lldb_dap = "${pkgs.lldb}/bin/lldb-dap",
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
             nil_ls = "${pkgs.nil}/bin/nil",
+            make = "${pkgs.gnumake}/bin/make",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
             ruff = "${pkgs.ruff}/bin/ruff",
             slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
@@ -49,13 +50,13 @@
             neovim
 
             git
-            (lua51Packages.lua.withPackages (ps: [ ps.jsregexp ]))
             lua51Packages.luarocks
             python3
 
             curl
             fd
             gcc
+            gnumake
             gnutar
             ripgrep
             tree-sitter
@@ -78,9 +79,11 @@
         };
       };
 
-      apps.${system}.default = {
-        type = "app";
-        program = "${self.packages.${system}.default}/bin/nvim";
+      apps.${system} = {
+        default = {
+          type = "app";
+          program = "${self.packages.${system}.default}/bin/nvim";
+        };
       };
     };
 }
