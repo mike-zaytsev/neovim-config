@@ -64,6 +64,7 @@
             gcc
             gnumake
             gnutar
+            lldb
             ripgrep
             tree-sitter-flake.packages.${system}.cli
 
