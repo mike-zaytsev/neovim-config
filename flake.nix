@@ -73,7 +73,7 @@
             lua-language-server
             pyright
             ruff
-            rust-analyzer
+            rust-analyzer-unwrapped
             slint-lsp
           ];
           runtimeEnv = {
