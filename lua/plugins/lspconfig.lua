@@ -74,7 +74,7 @@ return {
             })
             vim.lsp.enable("lua_ls")
 
-            vim.lsp.config("rust-analyzer", {
+            vim.lsp.config("rust_analyzer", {
                 cmd_env = {
                     RUSTUP_TOOLCHAIN = "stable",
                 },
