@@ -3,14 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    tree-sitter-flake.url = "github:tree-sitter/tree-sitter/v0.26.8";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      tree-sitter-flake,
     }:
     let
       system = "x86_64-linux";
@@ -66,7 +64,7 @@
             gnutar
             lldb
             ripgrep
-            tree-sitter-flake.packages.${system}.cli
+            tree-sitter
 
             clang-tools
             gopls
