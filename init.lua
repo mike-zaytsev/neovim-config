@@ -1,5 +1,7 @@
 require("config.lazy")
 
+vim.env.XDG_CONFIG_HOME = nil
+
 vim.g.moonflyTransparent = true
 require("catppuccin").setup({
     flavour = "latte",
