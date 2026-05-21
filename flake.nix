@@ -61,17 +61,10 @@
             gcc
             gnumake
             gnutar
-            lldb
             ripgrep
             tree-sitter
 
-            clang-tools
-            gopls
-            lua-language-server
-            pyright
-            ruff
             rust-analyzer-unwrapped
-            slint-lsp
           ];
           runtimeEnv = {
             NVIM_APPNAME = appName;
