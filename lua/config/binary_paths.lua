@@ -14,5 +14,6 @@ return {
     nil_ls = vim.fn.exepath("nil"),
     pyright = vim.fn.exepath("pyright-langserver"),
     ruff = vim.fn.exepath("ruff"),
+    texlab = vim.fn.exepath("texlab"),
     slint_lsp = vim.fn.exepath("slint-lsp"),
 }

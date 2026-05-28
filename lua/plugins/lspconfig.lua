@@ -108,6 +108,11 @@ return {
             })
             vim.lsp.enable("nil_ls")
 
+            vim.lsp.config("texlab", {
+                cmd = { binaries.texlab },
+            })
+            vim.lsp.enable("texlab")
+
             -- requires 'vscode-langservers-extracted' to be installed globally in npm
             vim.lsp.enable("html")
             vim.lsp.enable("cssls")

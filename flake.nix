@@ -27,6 +27,7 @@
             make = "${pkgs.gnumake}/bin/make",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
             ruff = "${pkgs.ruff}/bin/ruff",
+            texlab = "${pkgs.texlab}/bin/texlab",
             slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
         }
       '';
