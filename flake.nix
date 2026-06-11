@@ -32,6 +32,44 @@
         }
       '';
 
+      tsLangs = with pkgs.tree-sitter-grammars; {
+        lua = tree-sitter-lua;
+        c = tree-sitter-c;
+        cpp = tree-sitter-cpp;
+        cmake = tree-sitter-cmake;
+        cuda = tree-sitter-cuda;
+        rust = tree-sitter-rust;
+        toml = tree-sitter-toml;
+        python = tree-sitter-python;
+        typescript = tree-sitter-typescript;
+        vim = tree-sitter-vim;
+        markdown = tree-sitter-markdown;
+        hyprlang = tree-sitter-hyprlang;
+        yaml = tree-sitter-yaml;
+        nix = tree-sitter-nix;
+        json = tree-sitter-json;
+      };
+
+      parsers = pkgs.linkFarm "tree-sitter-parsers" (
+        builtins.attrValues (
+          builtins.mapAttrs (lang: grammar: {
+            name = "${appName}/parser/${lang}.so";
+            path = "${grammar}/parser";
+          }) tsLangs
+        )
+      );
+
+      queries = pkgs.linkFarm "tree-sitter-queries" (
+        builtins.filter ({ path, ... }: builtins.pathExists "${path}/.") (
+          builtins.attrValues (
+            builtins.mapAttrs (lang: grammar: {
+              name = "${appName}/queries/${lang}";
+              path = "${grammar}/queries";
+            }) tsLangs
+          )
+        )
+      );
+
       configTree = pkgs.runCommand "nvim-config-tree" { } ''
         mkdir -p "$out/${appName}"
         cp ${./init.lua} "$out/${appName}/init.lua"
@@ -43,6 +81,8 @@
         paths = [
           configTree
           binPaths
+          parsers
+          queries
         ];
       };
     in
@@ -59,8 +99,6 @@
 
             curl
             fd
-            gcc
-            gnumake
             gnutar
             ripgrep
             tree-sitter
