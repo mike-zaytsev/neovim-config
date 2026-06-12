@@ -64,8 +64,6 @@
             gnutar
             ripgrep
             tree-sitter
-
-            rust-analyzer-unwrapped
           ];
           runtimeEnv = {
             NVIM_APPNAME = appName;
