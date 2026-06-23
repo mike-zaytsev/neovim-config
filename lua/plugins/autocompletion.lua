@@ -48,6 +48,6 @@ return {
     {
         "L3MON4D3/LuaSnip",
         version = "v2.*",
-        build = binaries.make .. " install_jsregexp",
+        build = string.format("CC=%s %s install_jsregexp", binaries.gcc, binaries.make),
     },
 }

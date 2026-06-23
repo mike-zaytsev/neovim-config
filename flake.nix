@@ -25,6 +25,7 @@
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
             nil_ls = "${pkgs.nil}/bin/nil",
             make = "${pkgs.gnumake}/bin/make",
+            gcc = "${pkgs.gcc}/bin/gcc",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
             ruff = "${pkgs.ruff}/bin/ruff",
             texlab = "${pkgs.texlab}/bin/texlab",

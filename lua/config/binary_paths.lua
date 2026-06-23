@@ -11,6 +11,7 @@ return {
     lldb_dap = vim.fn.exepath("lldb-dap"),
     lua_ls = vim.fn.exepath("lua-language-server"),
     make = vim.fn.exepath("make"),
+    gcc = vim.fn.exepath("gcc"),
     nil_ls = vim.fn.exepath("nil"),
     pyright = vim.fn.exepath("pyright-langserver"),
     ruff = vim.fn.exepath("ruff"),
