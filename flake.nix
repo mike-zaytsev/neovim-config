@@ -25,12 +25,51 @@
             lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
             nil_ls = "${pkgs.nil}/bin/nil",
             make = "${pkgs.gnumake}/bin/make",
+            gcc = "${pkgs.gcc}/bin/gcc",
             pyright = "${pkgs.pyright}/bin/pyright-langserver",
             ruff = "${pkgs.ruff}/bin/ruff",
             texlab = "${pkgs.texlab}/bin/texlab",
             slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
         }
       '';
+
+      tsLangs = with pkgs.tree-sitter-grammars; {
+        lua = tree-sitter-lua;
+        c = tree-sitter-c;
+        cpp = tree-sitter-cpp;
+        cmake = tree-sitter-cmake;
+        cuda = tree-sitter-cuda;
+        rust = tree-sitter-rust;
+        toml = tree-sitter-toml;
+        python = tree-sitter-python;
+        typescript = tree-sitter-typescript;
+        vim = tree-sitter-vim;
+        markdown = tree-sitter-markdown;
+        hyprlang = tree-sitter-hyprlang;
+        yaml = tree-sitter-yaml;
+        nix = tree-sitter-nix;
+        json = tree-sitter-json;
+      };
+
+      parsers = pkgs.linkFarm "tree-sitter-parsers" (
+        builtins.attrValues (
+          builtins.mapAttrs (lang: grammar: {
+            name = "${appName}/parser/${lang}.so";
+            path = "${grammar}/parser";
+          }) tsLangs
+        )
+      );
+
+      queries = pkgs.linkFarm "tree-sitter-queries" (
+        builtins.filter ({ path, ... }: builtins.pathExists "${path}/.") (
+          builtins.attrValues (
+            builtins.mapAttrs (lang: grammar: {
+              name = "${appName}/queries/${lang}";
+              path = "${grammar}/queries";
+            }) tsLangs
+          )
+        )
+      );
 
       configTree = pkgs.runCommand "nvim-config-tree" { } ''
         mkdir -p "$out/${appName}"
@@ -43,6 +82,8 @@
         paths = [
           configTree
           binPaths
+          parsers
+          queries
         ];
       };
     in
@@ -59,8 +100,6 @@
 
             curl
             fd
-            gcc
-            gnumake
             gnutar
             ripgrep
             tree-sitter

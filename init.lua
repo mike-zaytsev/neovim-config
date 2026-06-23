@@ -11,6 +11,7 @@ vim.cmd.colorscheme("moonfly")
 -- vim.cmd.colorscheme("catppuccin")
 
 require("keymaps.setup")
+require("config.treesitter")
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "tex" },
