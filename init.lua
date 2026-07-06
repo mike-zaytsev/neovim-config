@@ -2,14 +2,7 @@ require("config.lazy")
 
 vim.env.XDG_CONFIG_HOME = nil
 
-vim.g.moonflyTransparent = true
-require("catppuccin").setup({
-    flavour = "latte",
-    transparent_background = false,
-})
-vim.cmd.colorscheme("moonfly")
--- vim.cmd.colorscheme("catppuccin")
-
+require("config.themes")
 require("keymaps.setup")
 require("config.treesitter")
 
