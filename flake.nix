@@ -62,6 +62,22 @@
             json = tree-sitter-json;
           };
 
+          patchedCppQueries = pkgs.runCommand "tree-sitter-cpp-queries-with-c-inheritance" { } ''
+            mkdir -p "$out"
+            cp -R ${pkgs.tree-sitter-grammars.tree-sitter-cpp}/queries/. "$out/"
+            chmod -R u+w "$out"
+
+            if [ -f "$out/highlights.scm" ]; then
+              original="$out/highlights.scm"
+              patched="$out/highlights.scm.patched"
+              printf '%s\n' '; inherits: c' > "$patched"
+              cat "$original" >> "$patched"
+              mv "$patched" "$original"
+            else
+              printf '%s\n' '; inherits: c' > "$out/highlights.scm"
+            fi
+          '';
+
           parsers = pkgs.linkFarm "tree-sitter-parsers" (
             builtins.attrValues (
               builtins.mapAttrs (lang: grammar: {
@@ -76,7 +92,11 @@
               builtins.attrValues (
                 builtins.mapAttrs (lang: grammar: {
                   name = "${appName}/queries/${lang}";
-                  path = "${grammar}/queries";
+                  path =
+                    if lang == "cpp" then
+                      patchedCppQueries
+                    else
+                      "${grammar}/queries";
                 }) tsLangs
               )
             )
