@@ -7,6 +7,7 @@ return {
             vim.lsp.config("clangd", {
                 cmd = {
                     binaries.clangd,
+                    "--query-driver=/usr/bin/*gcc,/usr/bin/*g++,/usr/bin/*clang,/usr/bin/*clang++",
                     "--clang-tidy",
                     "--enable-config",
                     "--header-insertion=never",
