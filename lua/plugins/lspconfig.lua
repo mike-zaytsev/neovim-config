@@ -113,9 +113,20 @@ return {
             })
             vim.lsp.enable("texlab")
 
-            -- requires 'vscode-langservers-extracted' to be installed globally in npm
+            vim.lsp.config("html", {
+                cmd = { binaries.vscode_html, "--stdio" }
+            })
             vim.lsp.enable("html")
+
+            vim.lsp.config("cssls", {
+                cmd = { binaries.vscode_css, "--stdio" }
+            })
             vim.lsp.enable("cssls")
+
+            vim.lsp.config("jsonls", {
+                cmd = { binaries.vscode_json, "--stdio" }
+            })
+            vim.lsp.enable("jsonls")
 
             vim.diagnostic.config({ virtual_text = true })
         end,

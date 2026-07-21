@@ -41,6 +41,9 @@
                 ruff = "${pkgs.ruff}/bin/ruff",
                 texlab = "${pkgs.texlab}/bin/texlab",
                 slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
+                vscode_css = "${pkgs.vscode-langservers-extracted}/bin/vscode-css-language-server",
+                vscode_html = "${pkgs.vscode-langservers-extracted}/bin/vscode-html-language-server",
+                vscode_json = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server",
             }
           '';
 
@@ -92,11 +95,7 @@
               builtins.attrValues (
                 builtins.mapAttrs (lang: grammar: {
                   name = "${appName}/queries/${lang}";
-                  path =
-                    if lang == "cpp" then
-                      patchedCppQueries
-                    else
-                      "${grammar}/queries";
+                  path = if lang == "cpp" then patchedCppQueries else "${grammar}/queries";
                 }) tsLangs
               )
             )

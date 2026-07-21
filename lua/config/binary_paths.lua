@@ -17,4 +17,7 @@ return {
     ruff = vim.fn.exepath("ruff"),
     texlab = vim.fn.exepath("texlab"),
     slint_lsp = vim.fn.exepath("slint-lsp"),
+    vscode_css = vim.fn.exepath("vscode-css-language-server"),
+    vscode_html = vim.fn.exepath("vscode-html-language-server"),
+    vscode_json = vim.fn.exepath("vscode-json-language-server"),
 }
