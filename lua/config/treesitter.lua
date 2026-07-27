@@ -6,4 +6,3 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.wo[0][0].foldmethod = "expr"
     end,
 })
-return {}

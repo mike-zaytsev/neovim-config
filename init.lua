@@ -7,7 +7,7 @@ require("keymaps.setup")
 require("config.treesitter")
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "tex" },
+    pattern = { "*.tex", "*.md" },
     callback = function()
         vim.cmd("set tw=100")
     end,
