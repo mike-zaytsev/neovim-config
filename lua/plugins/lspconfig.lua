@@ -75,11 +75,17 @@ return {
             })
             vim.lsp.enable("lua_ls")
 
-            vim.lsp.config("rust_analyzer", {
-                cmd_env = {
-                    RUSTUP_TOOLCHAIN = "stable",
-                },
-            })
+            vim.g.rustaceanvim = {
+                server = {
+                    default_settings = {
+                        ['rust-analyzer'] = {
+                            cmd_env = {
+                                RUSTUP_TOOLCHAIN = "stable",
+                            }
+                        }
+                    }
+                }
+            }
 
             vim.lsp.config("pyright", {
                 cmd = { binaries.pyright, "--stdio" },
