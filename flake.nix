@@ -37,6 +37,7 @@
                 nil_ls = "${pkgs.nil}/bin/nil",
                 make = "${pkgs.gnumake}/bin/make",
                 gcc = "${pkgs.gcc}/bin/gcc",
+                glsl_analyzer = "${pkgs.glsl_analyzer}/bin/glsl_analyzer",
                 pyright = "${pkgs.pyright}/bin/pyright-langserver",
                 ruff = "${pkgs.ruff}/bin/ruff",
                 texlab = "${pkgs.texlab}/bin/texlab",
@@ -53,6 +54,7 @@
             cpp = tree-sitter-cpp;
             cmake = tree-sitter-cmake;
             cuda = tree-sitter-cuda;
+            glsl = tree-sitter-glsl;
             rust = tree-sitter-rust;
             toml = tree-sitter-toml;
             python = tree-sitter-python;

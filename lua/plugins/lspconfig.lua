@@ -131,6 +131,12 @@ return {
             })
             vim.lsp.enable("jsonls")
 
+            vim.lsp.config("glsl_analyzer", {
+                cmd = { binaries.glsl_analyzer },
+            })
+            vim.lsp.enable("glsl_analyzer")
+
+
             vim.diagnostic.config({ virtual_text = true })
         end,
     },

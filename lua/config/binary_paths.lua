@@ -12,6 +12,7 @@ return {
     lua_ls = vim.fn.exepath("lua-language-server"),
     make = vim.fn.exepath("make"),
     gcc = vim.fn.exepath("gcc"),
+    glsl_analyzer = vim.fn.exepath("glsl_analyzer"),
     nil_ls = vim.fn.exepath("nil"),
     pyright = vim.fn.exepath("pyright-langserver"),
     ruff = vim.fn.exepath("ruff"),
