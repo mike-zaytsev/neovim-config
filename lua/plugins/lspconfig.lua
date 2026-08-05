@@ -77,12 +77,8 @@ return {
 
             vim.g.rustaceanvim = {
                 server = {
-                    default_settings = {
-                        ['rust-analyzer'] = {
-                            cmd_env = {
-                                RUSTUP_TOOLCHAIN = "stable",
-                            }
-                        }
+                    cmd_env = {
+                        RUSTUP_TOOLCHAIN = "stable",
                     }
                 }
             }
