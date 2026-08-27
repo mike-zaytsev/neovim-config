@@ -39,6 +39,7 @@
                 gcc = "${pkgs.gcc}/bin/gcc",
                 glsl_analyzer = "${pkgs.glsl_analyzer}/bin/glsl_analyzer",
                 pyright = "${pkgs.pyright}/bin/pyright-langserver",
+                rust_analyzer = "${pkgs.rust-analyzer-unwrapped}/bin/rust-analyzer",
                 ruff = "${pkgs.ruff}/bin/ruff",
                 texlab = "${pkgs.texlab}/bin/texlab",
                 slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",

@@ -15,6 +15,14 @@ return {
     glsl_analyzer = vim.fn.exepath("glsl_analyzer"),
     nil_ls = vim.fn.exepath("nil"),
     pyright = vim.fn.exepath("pyright-langserver"),
+    rust_analyzer = vim.fn.systemlist({
+        "rustup",
+        "which",
+        "--toolchain",
+        "stable",
+        "rust-analyzer",
+
+    })[1],
     ruff = vim.fn.exepath("ruff"),
     texlab = vim.fn.exepath("texlab"),
     slint_lsp = vim.fn.exepath("slint-lsp"),
