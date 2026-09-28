@@ -1,32 +1,23 @@
-local status, nix_paths = pcall(require, "config.nix_paths")
-if status then
-    return nix_paths
-end
+---@class BinaryPaths
+---@field clangd string
+---@field cmake_language_server string
+---@field gopls string
+---@field lldb_dap string
+---@field lua_ls string
+---@field nil_ls string
+---@field make string
+---@field gcc string
+---@field glsl_analyzer string
+---@field pyright string
+---@field rust_analyzer string
+---@field ruff string
+---@field texlab string
+---@field slint_lsp string
+---@field vscode_css string
+---@field vscode_html string
+---@field vscode_json string
 
-local gopath = vim.system({ "go", "env", "GOPATH" }):wait().stdout
-return {
-    clangd = vim.fn.exepath("clangd"),
-    cmake_language_server = vim.fn.exepath("cmake-language-server"),
-    gopls = string.sub(gopath, 1, -2) .. "/bin/gopls",
-    lldb_dap = vim.fn.exepath("lldb-dap"),
-    lua_ls = vim.fn.exepath("lua-language-server"),
-    make = vim.fn.exepath("make"),
-    gcc = vim.fn.exepath("gcc"),
-    glsl_analyzer = vim.fn.exepath("glsl_analyzer"),
-    nil_ls = vim.fn.exepath("nil"),
-    pyright = vim.fn.exepath("pyright-langserver"),
-    rust_analyzer = vim.fn.systemlist({
-        "rustup",
-        "which",
-        "--toolchain",
-        "stable",
-        "rust-analyzer",
+---@type BinaryPaths
+local nix_paths = require("config.nix_paths")
 
-    })[1],
-    ruff = vim.fn.exepath("ruff"),
-    texlab = vim.fn.exepath("texlab"),
-    slint_lsp = vim.fn.exepath("slint-lsp"),
-    vscode_css = vim.fn.exepath("vscode-css-language-server"),
-    vscode_html = vim.fn.exepath("vscode-html-language-server"),
-    vscode_json = vim.fn.exepath("vscode-json-language-server"),
-}
+return nix_paths
