@@ -57,7 +57,7 @@
           tsLangs = with pkgs.tree-sitter-grammars; {
             lua = tree-sitter-lua;
             c = tree-sitter-c;
-            cpp = tree-sitter-cpp;
+            cpp = import ./nix/tree-sitter-cpp.nix pkgs;
             cmake = tree-sitter-cmake;
             cuda = tree-sitter-cuda;
             glsl = tree-sitter-glsl;
@@ -73,24 +73,6 @@
             json = tree-sitter-json;
           };
 
-          patchedCppQueries = pkgs.runCommand "tree-sitter-cpp-queries-with-c-inheritance" { } ''
-            mkdir -p "$out"
-            cp -R ${pkgs.tree-sitter-grammars.tree-sitter-cpp}/queries/. "$out/"
-            chmod -R u+w "$out"
-
-            if [ -f "$out/highlights.scm" ]; then
-              original="$out/highlights.scm"
-              patched="$out/highlights.scm.patched"
-              printf '%s\n' '; inherits: c' > "$patched"
-              cat "$original" >> "$patched"
-              mv "$patched" "$original"
-            else
-              printf '%s\n' '; inherits: c' > "$out/highlights.scm"
-            fi
-
-            printf '%s\n' '; inherits: c' > "$out/folds.scm"
-          '';
-
           parsers = pkgs.linkFarm "tree-sitter-parsers" (
             builtins.attrValues (
               builtins.mapAttrs (lang: grammar: {
@@ -105,11 +87,7 @@
               builtins.attrValues (
                 builtins.mapAttrs (lang: grammar: {
                   name = "${appName}/queries/${lang}";
-                  path =
-                    if lang == "cpp" then
-                      patchedCppQueries
-                    else
-                      "${grammar}/queries";
+                  path = "${grammar}/queries";
                 }) tsLangs
               )
             )
