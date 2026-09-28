@@ -5,6 +5,7 @@ vim.env.XDG_CONFIG_HOME = nil
 require("config.themes")
 require("keymaps.setup")
 require("config.treesitter")
+require("config.folding")
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "*.tex", "*.md" },

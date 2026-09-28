@@ -82,6 +82,8 @@
             else
               printf '%s\n' '; inherits: c' > "$out/highlights.scm"
             fi
+
+            printf '%s\n' '; inherits: c' > "$out/folds.scm"
           '';
 
           parsers = pkgs.linkFarm "tree-sitter-parsers" (
