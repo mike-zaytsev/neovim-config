@@ -32,66 +32,13 @@
 
           appName = "nvim-flake";
 
-          binPaths = pkgs.writeTextDir "${appName}/lua/config/nix_paths.lua" ''
-            return {
-                clangd = "${pkgs.clang-tools}/bin/clangd",
-                cmake_language_server = "${pkgs.cmake-language-server}/bin/cmake-language-server",
-                gopls = "${pkgs.gopls}/bin/gopls",
-                lldb_dap = "${pkgs.lldb}/bin/lldb-dap",
-                lua_ls = "${pkgs.lua-language-server}/bin/lua-language-server",
-                nil_ls = "${pkgs.nil}/bin/nil",
-                make = "${pkgs.gnumake}/bin/make",
-                gcc = "${pkgs.gcc}/bin/gcc",
-                glsl_analyzer = "${pkgs.glsl_analyzer}/bin/glsl_analyzer",
-                pyright = "${pkgs.pyright}/bin/pyright-langserver",
-                rust_analyzer = "${pkgs.rust-analyzer-unwrapped}/bin/rust-analyzer",
-                ruff = "${pkgs.ruff}/bin/ruff",
-                texlab = "${pkgs.texlab}/bin/texlab",
-                slint_lsp = "${pkgs.slint-lsp}/bin/slint-lsp",
-                vscode_css = "${pkgs.vscode-langservers-extracted}/bin/vscode-css-language-server",
-                vscode_html = "${pkgs.vscode-langservers-extracted}/bin/vscode-html-language-server",
-                vscode_json = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server",
-            }
-          '';
-
-          tsLangs = with pkgs.tree-sitter-grammars; {
-            lua = tree-sitter-lua;
-            c = tree-sitter-c;
-            cpp = import ./nix/tree-sitter-cpp.nix pkgs;
-            cmake = tree-sitter-cmake;
-            cuda = tree-sitter-cuda;
-            glsl = tree-sitter-glsl;
-            rust = tree-sitter-rust;
-            toml = tree-sitter-toml;
-            python = tree-sitter-python;
-            typescript = tree-sitter-typescript;
-            vim = tree-sitter-vim;
-            markdown = tree-sitter-markdown;
-            hyprlang = tree-sitter-hyprlang;
-            yaml = tree-sitter-yaml;
-            nix = numtide-tree-sitter-nix.packages.${system}.tree-sitter-nix;
-            json = tree-sitter-json;
+          callLocal = pkgs.newScope {
+            inherit pkgs appName system numtide-tree-sitter-nix;
           };
 
-          parsers = pkgs.linkFarm "tree-sitter-parsers" (
-            builtins.attrValues (
-              builtins.mapAttrs (lang: grammar: {
-                name = "${appName}/parser/${lang}.so";
-                path = "${grammar}/parser";
-              }) tsLangs
-            )
-          );
+          binPaths = callLocal ./nix/binaries.nix { };
 
-          queries = pkgs.linkFarm "tree-sitter-queries" (
-            builtins.filter ({ path, ... }: builtins.pathExists "${path}/.") (
-              builtins.attrValues (
-                builtins.mapAttrs (lang: grammar: {
-                  name = "${appName}/queries/${lang}";
-                  path = "${grammar}/queries";
-                }) tsLangs
-              )
-            )
-          );
+          treeSitter = callLocal ./nix/tree-sitter.nix { };
 
           configTree = pkgs.runCommand "nvim-config-tree" { } ''
             mkdir -p "$out/${appName}"
@@ -104,8 +51,8 @@
             paths = [
               configTree
               binPaths
-              parsers
-              queries
+              treeSitter.parsers
+              treeSitter.queries
             ];
           };
         in
