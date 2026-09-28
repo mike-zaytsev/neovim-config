@@ -3,12 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    numtide-tree-sitter-nix = {
+      url = "github:numtide/tree-sitter-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      numtide-tree-sitter-nix,
     }:
     let
       systems = [
@@ -64,7 +69,7 @@
             markdown = tree-sitter-markdown;
             hyprlang = tree-sitter-hyprlang;
             yaml = tree-sitter-yaml;
-            nix = tree-sitter-nix;
+            nix = numtide-tree-sitter-nix.packages.${system}.tree-sitter-nix;
             json = tree-sitter-json;
           };
 
@@ -100,7 +105,11 @@
               builtins.attrValues (
                 builtins.mapAttrs (lang: grammar: {
                   name = "${appName}/queries/${lang}";
-                  path = if lang == "cpp" then patchedCppQueries else "${grammar}/queries";
+                  path =
+                    if lang == "cpp" then
+                      patchedCppQueries
+                    else
+                      "${grammar}/queries";
                 }) tsLangs
               )
             )
